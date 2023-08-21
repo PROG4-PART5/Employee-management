@@ -1,6 +1,6 @@
 package com.example.prog4.controller.view;
 
-import com.example.prog4.repository.entity.User;
+import com.example.prog4.repository.SimpleEmployee.entity.User;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

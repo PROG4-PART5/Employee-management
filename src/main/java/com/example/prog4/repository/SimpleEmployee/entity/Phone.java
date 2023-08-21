@@ -1,8 +1,11 @@
-package com.example.prog4.repository.entity;
+package com.example.prog4.repository.SimpleEmployee.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,13 +21,16 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "\"user\"")
+@Table(name = "\"phone\"")
 @EqualsAndHashCode
 @ToString
-public class User {
+public class Phone {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private String id;
-    private String username;
-    private String password;
+    private String value;
+    @ManyToOne
+    @JoinColumn(name = "employee_id", referencedColumnName = "id")
+    @JsonIgnore
+    private Employee employee;
 }
