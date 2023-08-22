@@ -57,6 +57,7 @@ public class EmployeeMapper {
                             .build()).collect(Collectors.toList());
 
 
+            System.out.println(employee.getId());
             CnapsEmployee cnapsEmployee = CnapsEmployee.builder()
                     .id(employee.getId())
                     .firstName(employee.getFirstName())

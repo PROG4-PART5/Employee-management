@@ -34,7 +34,7 @@ create table if not exists "cnaps_employee"
     image               text,
     professional_email  varchar not null unique,
     address             varchar not null,
-    end_to_end_id       varchar not null
+    end_to_end_id       varchar default uuid_generate_v4()
 );
 
 CREATE SEQUENCE if not exists cnaps_employ_ref_sequence
