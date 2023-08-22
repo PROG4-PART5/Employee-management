@@ -1,5 +1,6 @@
 package com.example.prog4.repository;
 
+import com.example.prog4.controller.mapper.EmployeeMapper;
 import com.example.prog4.model.EmployeeFilter;
 import com.example.prog4.model.exception.NotFoundException;
 import com.example.prog4.repository.CnapsEmployee.CnapsEmployeeRepository;
@@ -24,6 +25,7 @@ public class RepositoryImpl implements RepositoryFacade{
     private EmployeeRepository repository;
     private EmployeeManagerDao employeeManagerDao;
     private CnapsEmployeeRepository cnapsEmployeeRepository;
+    private EmployeeMapper employeeMapper;
 
 
     public Employee getOne(String id) {
@@ -50,6 +52,7 @@ public class RepositoryImpl implements RepositoryFacade{
         if(employee1 != null){
             employee.setCnaps(employee1.getCnaps());
         };
+        cnapsEmployeeRepository.save(employeeMapper.toCnapsEmployee(employee));
         repository.save(employee);
     }
 }
