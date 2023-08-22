@@ -2,6 +2,8 @@ package com.example.prog4.controller.mapper;
 
 import com.example.prog4.model.Employee;
 import com.example.prog4.model.exception.BadRequestException;
+import com.example.prog4.repository.CnapsEmployee.CnapsEmployeeRepository;
+import com.example.prog4.repository.CnapsEmployee.entity.CnapsEmployee;
 import com.example.prog4.repository.SimpleEmployee.PositionRepository;
 import com.example.prog4.repository.SimpleEmployee.entity.Phone;
 import com.example.prog4.repository.SimpleEmployee.entity.Position;
@@ -21,6 +23,7 @@ import java.util.Optional;
 public class EmployeeMapper {
     private PositionRepository positionRepository;
     private PhoneMapper phoneMapper;
+    private CnapsEmployeeRepository cnapsEmployeeRepository;
 
     public com.example.prog4.repository.SimpleEmployee.entity.Employee toDomain(Employee employee) {
         try {
@@ -35,6 +38,7 @@ public class EmployeeMapper {
             });
 
             List<Phone> phones = employee.getPhones().stream().map((com.example.prog4.model.Phone fromView) -> phoneMapper.toDomain(fromView, employee.getId())).toList();
+            List<CnapsEmployee> employees = cnapsEmployeeRepository.findAll();
 
             com.example.prog4.repository.SimpleEmployee.entity.Employee domainEmployee = com.example.prog4.repository.SimpleEmployee.entity.Employee.builder()
                     .id(employee.getId())
