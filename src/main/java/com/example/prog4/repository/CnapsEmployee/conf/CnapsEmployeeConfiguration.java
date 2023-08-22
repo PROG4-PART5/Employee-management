@@ -64,8 +64,7 @@ public class CnapsEmployeeConfiguration {
                 .dataSource(cnapsDataSource())
                 .locations("classpath:db/migration/CnapsEmployee")
                 .load()
-                .migrate()
-                ;
+                .migrate();
     }
 
 }

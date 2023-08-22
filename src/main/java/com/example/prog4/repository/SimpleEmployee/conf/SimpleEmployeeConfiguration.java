@@ -5,7 +5,6 @@ import org.flywaydb.core.Flyway;
 import org.flywaydb.core.api.output.MigrateResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,10 +15,12 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import javax.sql.DataSource;
+import java.util.HashMap;
 
 @Configuration
 @Component
@@ -42,16 +43,21 @@ public class SimpleEmployeeConfiguration {
         return dataSource;
     }
 
+    @Bean
     @Primary
-    @Bean(name = "employeeEntityManager")
-    public LocalContainerEntityManagerFactoryBean employeeEntityFactoryManager(
-            EntityManagerFactoryBuilder builder,
-            @Qualifier("employees") DataSource dataSource) {
-        return builder
-                .dataSource(dataSource)
-                .packages("com.example.prog4.repository.SimpleEmployee.entity")
-                .persistenceUnit("employees")
-                .build();
+    public LocalContainerEntityManagerFactoryBean employeeEntityManager() {
+        LocalContainerEntityManagerFactoryBean em
+                = new LocalContainerEntityManagerFactoryBean();
+        em.setDataSource(employeeDataSource());
+        em.setPackagesToScan("com.example.prog4.repository.SimpleEmployee" );
+
+        HibernateJpaVendorAdapter vendorAdapter
+                = new HibernateJpaVendorAdapter();
+        em.setJpaVendorAdapter(vendorAdapter);
+        HashMap<String, Object> properties = new HashMap<>();
+        em.setJpaPropertyMap(properties);
+
+        return em;
     }
 
     @Primary
@@ -62,9 +68,10 @@ public class SimpleEmployeeConfiguration {
     }
 
     @Primary
-    public MigrateResult flywayDataSource1(@Qualifier("employees") DataSource dataSource) {
+    @Bean
+    public MigrateResult flywayDataSource1() {
        return Flyway.configure()
-                .dataSource(dataSource)
+                .dataSource(employeeDataSource())
                 .locations("classpath:db/migration/SimpleEmployee")
                 .load()
                .migrate();
