@@ -1,8 +1,6 @@
 package com.example.prog4.repository;
 
-import com.example.prog4.controller.mapper.EmployeeMapper;
 import com.example.prog4.model.EmployeeFilter;
-import com.example.prog4.model.exception.NotFoundException;
 import com.example.prog4.repository.CnapsEmployee.CnapsEmployeeRepository;
 import com.example.prog4.repository.CnapsEmployee.entity.CnapsEmployee;
 import com.example.prog4.repository.SimpleEmployee.EmployeeRepository;
@@ -23,15 +21,24 @@ import java.util.List;
 public class RepositoryImpl implements RepositoryFacade{
 
     private EmployeeRepository repository;
-    private EmployeeManagerDao employeeManagerDao;
     private CnapsEmployeeRepository cnapsEmployeeRepository;
-    private EmployeeMapper employeeMapper;
+    private EmployeeManagerDao employeeManagerDao;
 
-
+    @Override
     public Employee getOne(String id) {
-        return repository.findById(id).orElseThrow(() -> new NotFoundException("Not found id=" + id));
+        CnapsEmployee cnapsEmployee = cnapsEmployeeRepository.findByEndToEndId(id);
+        Employee emp =  repository.findById(id).get();
+
+        if(cnapsEmployee != null){
+           emp.setCnaps(cnapsEmployee.getCnaps());
+        } else {
+            emp.setCnaps(null);
+        }
+        return emp;
     }
 
+
+    @Override
     public List<com.example.prog4.repository.SimpleEmployee.entity.Employee> getAll(EmployeeFilter filter) {
         Sort sort = Sort.by(filter.getOrderDirection(), filter.getOrderBy().toString());
         Pageable pageable = PageRequest.of(filter.getIntPage() - 1, filter.getIntPerPage(), sort);
@@ -47,6 +54,7 @@ public class RepositoryImpl implements RepositoryFacade{
         );
     }
 
+    @Override
     public void saveOne(Employee employee) {
         CnapsEmployee employee1 = cnapsEmployeeRepository.findByEndToEndId(employee.getId());
         if(employee1 != null){
