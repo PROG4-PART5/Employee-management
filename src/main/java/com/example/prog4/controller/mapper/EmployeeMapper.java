@@ -139,7 +139,6 @@ public class EmployeeMapper {
     }
 
     public Employee toView(com.example.prog4.repository.SimpleEmployee.entity.Employee employee) {
-        CnapsEmployee cnapsEmployee = cnapsEmployeeRepository.findByEndToEndId(employee.getId());
 
         return Employee.builder()
                 .id(employee.getId())
@@ -147,7 +146,7 @@ public class EmployeeMapper {
                 .lastName(employee.getLastName())
                 .address(employee.getAddress())
                 .cin(employee.getCin())
-                .cnaps(cnapsEmployee != null ? cnapsEmployee.getCnaps() : null)
+                .cnaps(employee.getCnaps())
                 .registrationNumber(employee.getRegistrationNumber())
                 .childrenNumber(employee.getChildrenNumber())
                 // enums

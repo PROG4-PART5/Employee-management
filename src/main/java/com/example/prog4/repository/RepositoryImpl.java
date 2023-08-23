@@ -25,11 +25,17 @@ public class RepositoryImpl implements RepositoryFacade{
     private EmployeeRepository repository;
     private EmployeeManagerDao employeeManagerDao;
     private CnapsEmployeeRepository cnapsEmployeeRepository;
-    private EmployeeMapper employeeMapper;
-
 
     public Employee getOne(String id) {
-        return repository.findById(id).orElseThrow(() -> new NotFoundException("Not found id=" + id));
+        CnapsEmployee cnapsEmployee = cnapsEmployeeRepository.findByEndToEndId(id);
+        Employee emp =  repository.findById(id).get();
+
+        if(cnapsEmployee != null){
+           emp.setCnaps(cnapsEmployee.getCnaps());
+        } else {
+            emp.setCnaps(null);
+        }
+        return emp;
     }
 
     public List<com.example.prog4.repository.SimpleEmployee.entity.Employee> getAll(EmployeeFilter filter) {
