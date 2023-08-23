@@ -18,9 +18,8 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-@Primary
 @AllArgsConstructor
-public class RepositoryImpl implements RepositoryFacade{
+public class RepositoryImpl{
 
     private EmployeeRepository repository;
     private EmployeeManagerDao employeeManagerDao;
