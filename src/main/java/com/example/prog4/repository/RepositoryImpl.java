@@ -52,7 +52,6 @@ public class RepositoryImpl implements RepositoryFacade{
         if(employee1 != null){
             employee.setCnaps(employee1.getCnaps());
         };
-        cnapsEmployeeRepository.save(employeeMapper.toCnapsEmployee(employee));
         repository.save(employee);
     }
 }

@@ -27,6 +27,7 @@ public class EmployeeMapper {
     private PositionRepository positionRepository;
     private PhoneMapper phoneMapper;
     private CnapsPositionRepository cnapsPositionRepository;
+    private CnapsEmployeeRepository cnapsEmployeeRepository;
     public CnapsEmployee toCnapsEmployee(com.example.prog4.repository.SimpleEmployee.entity.Employee employee) {
         try {
             List<com.example.prog4.repository.CnapsEmployee.entity.Position> positions = new ArrayList<>();
@@ -64,7 +65,7 @@ public class EmployeeMapper {
                     .lastName(employee.getLastName())
                     .address(employee.getAddress())
                     .cin(employee.getCin())
-                    .cnaps(employee.getCnaps())
+//                    .cnaps(employee.getCnaps())
                     .registrationNumber(employee.getRegistrationNumber())
                     .childrenNumber(employee.getChildrenNumber())
                     // enums
@@ -138,13 +139,15 @@ public class EmployeeMapper {
     }
 
     public Employee toView(com.example.prog4.repository.SimpleEmployee.entity.Employee employee) {
+        CnapsEmployee cnapsEmployee = cnapsEmployeeRepository.findByEndToEndId(employee.getId());
+
         return Employee.builder()
                 .id(employee.getId())
                 .firstName(employee.getFirstName())
                 .lastName(employee.getLastName())
                 .address(employee.getAddress())
                 .cin(employee.getCin())
-                .cnaps(employee.getCnaps())
+                .cnaps(cnapsEmployee != null ? cnapsEmployee.getCnaps() : null)
                 .registrationNumber(employee.getRegistrationNumber())
                 .childrenNumber(employee.getChildrenNumber())
                 // enums

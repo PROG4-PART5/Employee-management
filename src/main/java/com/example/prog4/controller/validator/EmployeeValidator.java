@@ -68,9 +68,6 @@ public class EmployeeValidator {
         if (!isNotNullAndNotBlank(employee.getPersonalEmail())) {
             error.append("Personal email is mandatory. ");
         }
-        if (!isNotNullAndNotBlank(employee.getCnaps())) {
-            error.append("Cnaps is mandatory. ");
-        }
         if (!error.isEmpty()) {
             throw new BadRequestException(error.toString());
         }
